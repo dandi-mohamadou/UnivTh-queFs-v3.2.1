@@ -1,0 +1,504 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>UnivThèqueFs — Archives Pédagogiques | Informatique FS Ngaoundéré</title>
+  <meta name="description" content="Plateforme d'archives pédagogiques de la filière Informatique — Faculté des Sciences, Université de Ngaoundéré"/>
+  <link rel="stylesheet" href="css/style.css"/>
+  <link rel="preconnect" href="https://fonts.googleapis.com"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+
+<!-- ═══════════════════════════════════════════════
+     BARRE DE NAVIGATION
+═══════════════════════════════════════════════ -->
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <div class="nav-brand">
+      <div class="logo-wrapper">
+        <div class="logo-emblem">
+          <span class="logo-u">U</span><span class="logo-t">T</span>
+        </div>
+        <div class="logo-text">
+          <span class="brand-main">UnivThèque<span class="brand-accent">Fs</span></span>
+          <span class="brand-sub">Informatique · Faculté des Sciences</span>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-search">
+      <div class="search-box">
+        <i class="fas fa-search"></i>
+        <input type="text" id="globalSearch" placeholder="Chercher cours, TD, examens…" autocomplete="off"/>
+        <div class="search-results" id="searchResults"></div>
+      </div>
+    </div>
+
+    <div class="nav-links">
+      <a href="index.html" class="nav-link active"><i class="fas fa-home"></i> Accueil</a>
+      <a href="pages/licence1.html" class="nav-link">L1</a>
+      <a href="pages/licence2.html" class="nav-link">L2</a>
+      <a href="pages/licence3.html" class="nav-link">L3</a>
+      <a href="#" class="nav-link" id="adminLink" style="display:none"><i class="fas fa-cog"></i></a>
+      <div style="display:flex;align-items:center;gap:8px">
+        <a href="pages/admin.html"
+          style="padding:8px 14px;border-radius:8px;background:#F59E0B;color:#fff;
+          font-weight:700;font-size:.82rem;text-decoration:none;display:inline-flex;
+          align-items:center;gap:6px;transition:all .2s"
+          onmouseover="this.style.background='#D97706'"
+          onmouseout="this.style.background='#F59E0B'">
+          <i class="fas fa-cog"></i> Admin
+        </a>
+        <button class="btn-login" id="authBtn" onclick="showAuthModal()">
+          <i class="fas fa-user"></i> <span id="authLabel">Connexion</span>
+        </button>
+      </div>
+    </div>
+
+    <button class="nav-hamburger" id="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </div>
+</nav>
+
+<!-- Mobile Menu -->
+<div class="mobile-menu" id="mobileMenu">
+  <a href="index.html"><i class="fas fa-home"></i> Accueil</a>
+  <a href="pages/licence1.html"><i class="fas fa-graduation-cap"></i> Licence 1</a>
+  <a href="pages/licence2.html"><i class="fas fa-graduation-cap"></i> Licence 2</a>
+  <a href="pages/licence3.html"><i class="fas fa-graduation-cap"></i> Licence 3</a>
+  <a href="#" onclick="showAuthModal()"><i class="fas fa-sign-in-alt"></i> Connexion</a>
+</div>
+
+<!-- ═══════════════════════════════════════════════
+     HERO SECTION
+═══════════════════════════════════════════════ -->
+<header class="hero">
+  <div class="hero-bg">
+    <div class="hero-grid"></div>
+    <div class="hero-orb orb1"></div>
+    <div class="hero-orb orb2"></div>
+  </div>
+  <div class="hero-content">
+    <div class="hero-badge">
+      <i class="fas fa-university"></i>
+      Université de Ngaoundéré · Faculté des Sciences
+    </div>
+    <h1 class="hero-title">
+      La bibliothèque<br/>
+      <span class="hero-accent">numérique</span> de<br/>
+      l'informaticien
+    </h1>
+    <p class="hero-desc">
+      Centralisez, partagez et accédez à tous les supports pédagogiques —
+      cours, TD, examens, contrôles — organisés par niveau et par matière.
+    </p>
+    <div class="hero-actions">
+      <a href="#niveaux" class="btn-primary">
+        <i class="fas fa-folder-open"></i> Explorer les archives
+      </a>
+      <a href="#search-section" class="btn-secondary">
+        <i class="fas fa-search"></i> Recherche avancée
+      </a>
+    </div>
+  </div>
+  <div class="hero-stats">
+    <div class="stat-card">
+      <span class="stat-num" data-target="180">0</span>
+      <span class="stat-label">Documents</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="36">0</span>
+      <span class="stat-label">Matières</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="10">0</span>
+      <span class="stat-label">Professeurs</span>
+    </div>
+    <div class="stat-card">
+      <span class="stat-num" data-target="3">0</span>
+      <span class="stat-label">Niveaux</span>
+    </div>
+  </div>
+</header>
+
+<!-- ═══════════════════════════════════════════════
+     NIVEAUX / LICENCES
+═══════════════════════════════════════════════ -->
+<section class="section" id="niveaux">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Niveaux d'études</span>
+      <h2>Cycle Licence Informatique</h2>
+      <p>Sélectionnez votre niveau pour accéder aux archives organisées par semestre et par UE</p>
+    </div>
+
+    <div class="levels-grid">
+      <!-- L1 -->
+      <a href="pages/licence1.html" class="level-card level-card--l1">
+        <div class="level-card__top">
+          <div class="level-badge">L1</div>
+          <div class="level-sems">
+            <span>S1</span><span>S2</span>
+          </div>
+        </div>
+        <h3 class="level-title">Licence 1</h3>
+        <p class="level-desc">Algorithmique · Analyse · Architecture · Programmation</p>
+        <div class="level-ues">
+          <div class="ue-chip">INF111</div><div class="ue-chip">INF121</div>
+          <div class="ue-chip">INF131</div><div class="ue-chip">INF141</div>
+          <div class="ue-chip more">+8</div>
+        </div>
+        <div class="level-footer">
+          <span><i class="fas fa-book"></i> 12 UEs</span>
+          <span><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- L2 -->
+      <a href="pages/licence2.html" class="level-card level-card--l2">
+        <div class="level-card__top">
+          <div class="level-badge">L2</div>
+          <div class="level-sems">
+            <span>S3</span><span>S4</span>
+          </div>
+        </div>
+        <h3 class="level-title">Licence 2</h3>
+        <p class="level-desc">POO · BDD · Génie Logiciel · Programmation Web</p>
+        <div class="level-ues">
+          <div class="ue-chip">INF213</div><div class="ue-chip">INF223</div>
+          <div class="ue-chip">INF233</div><div class="ue-chip">INF244</div>
+          <div class="ue-chip more">+8</div>
+        </div>
+        <div class="level-footer">
+          <span><i class="fas fa-book"></i> 12 UEs</span>
+          <span><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+
+      <!-- L3 -->
+      <a href="pages/licence3.html" class="level-card level-card--l3">
+        <div class="level-card__top">
+          <div class="level-badge">L3</div>
+          <div class="level-sems">
+            <span>S5</span><span>S6</span>
+          </div>
+        </div>
+        <h3 class="level-title">Licence 3</h3>
+        <p class="level-desc">Réseaux · Cloud · BDD Avancé · Compilation</p>
+        <div class="level-ues">
+          <div class="ue-chip">INF316</div><div class="ue-chip">INF326</div>
+          <div class="ue-chip">INF336</div><div class="ue-chip">INF346</div>
+          <div class="ue-chip more">+8</div>
+        </div>
+        <div class="level-footer">
+          <span><i class="fas fa-book"></i> 12 UEs</span>
+          <span><i class="fas fa-arrow-right"></i></span>
+        </div>
+      </a>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     RECHERCHE AVANCÉE
+═══════════════════════════════════════════════ -->
+<section class="section section--dark" id="search-section">
+  <div class="container">
+    <div class="section-header light">
+      <span class="section-tag">Moteur de recherche</span>
+      <h2>Trouvez vos documents</h2>
+    </div>
+
+    <div class="search-advanced">
+      <div class="search-row">
+        <div class="form-group">
+          <label><i class="fas fa-search"></i> Mot-clé</label>
+          <input type="text" id="adv-keyword" placeholder="ex: algorithmique, pointeurs…" class="form-input"/>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-layer-group"></i> Niveau</label>
+          <select id="adv-niveau" class="form-select">
+            <option value="">Tous les niveaux</option>
+            <option value="L1">Licence 1</option>
+            <option value="L2">Licence 2</option>
+            <option value="L3">Licence 3</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-layer-group"></i> Semestre</label>
+          <select id="adv-semestre" class="form-select">
+            <option value="">Tous</option>
+            <option value="1">Semestre 1</option>
+            <option value="2">Semestre 2</option>
+            <option value="3">Semestre 3</option>
+            <option value="4">Semestre 4</option>
+            <option value="5">Semestre 5</option>
+            <option value="6">Semestre 6</option>
+          </select>
+        </div>
+      </div>
+      <div class="search-row">
+        <div class="form-group">
+          <label><i class="fas fa-file"></i> Type de document</label>
+          <select id="adv-type" class="form-select">
+            <option value="">Tous les types</option>
+            <option value="1">Cours</option>
+            <option value="2">Travaux Dirigés (TD)</option>
+            <option value="3">Travaux Pratiques (TP)</option>
+            <option value="4">Contrôle Continu (CC)</option>
+            <option value="5">Examen — Session Normale</option>
+            <option value="6">Examen — Session de Rattrapage</option>
+            <option value="7">TPE</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-user-tie"></i> Professeur</label>
+          <select id="adv-prof" class="form-select">
+            <option value="">Tous les professeurs</option>
+            <option value="1">Pr Dayang</option>
+            <option value="2">Dr Adamou</option>
+            <option value="3">Pr Tchakounte</option>
+            <option value="4">Dr Djeutcha</option>
+            <option value="5">Dr Guidana</option>
+            <option value="6">Dr Mbala</option>
+            <option value="7">Pr Batoure</option>
+            <option value="8">Pr Kamla</option>
+            <option value="9">Dr Hanwa</option>
+            <option value="10">Pr Nlong</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label><i class="fas fa-calendar"></i> Année académique</label>
+          <select id="adv-annee" class="form-select">
+            <option value="">Toutes les années</option>
+            <option value="5">2025-2026</option>
+            <option value="4">2024-2025</option>
+            <option value="3">2023-2024</option>
+            <option value="2">2022-2023</option>
+            <option value="1">2021-2022</option>
+          </select>
+        </div>
+      </div>
+      <div class="search-actions">
+        <button class="btn-primary" onclick="performSearch()">
+          <i class="fas fa-search"></i> Rechercher
+        </button>
+        <button class="btn-outline" onclick="resetSearch()">
+          <i class="fas fa-times"></i> Réinitialiser
+        </button>
+      </div>
+    </div>
+
+    <!-- Résultats de recherche -->
+    <div id="searchResultsContainer" class="results-container" style="display:none">
+      <div class="results-header">
+        <span id="resultsCount"></span>
+        <div class="results-sort">
+          <label>Trier par:</label>
+          <select id="sortBy" class="form-select sm">
+            <option value="date">Date</option>
+            <option value="titre">Titre</option>
+            <option value="type">Type</option>
+          </select>
+        </div>
+      </div>
+      <div id="resultsList" class="results-list"></div>
+      <div id="paginationContainer" class="pagination"></div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     TYPES DE DOCUMENTS
+═══════════════════════════════════════════════ -->
+<section class="section">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Archives disponibles</span>
+      <h2>Types de documents</h2>
+    </div>
+    <div class="doc-types-grid">
+      <div class="doc-type-card" onclick="filterByType(1)">
+        <div class="doc-type-icon" style="--c:#3B82F6"><i class="fas fa-book-open"></i></div>
+        <h4>Cours</h4><p>Polycopiés & slides professeurs</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(2)">
+        <div class="doc-type-icon" style="--c:#10B981"><i class="fas fa-pencil-alt"></i></div>
+        <h4>TD</h4><p>Travaux dirigés + corrigés</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(3)">
+        <div class="doc-type-icon" style="--c:#8B5CF6"><i class="fas fa-flask"></i></div>
+        <h4>TP</h4><p>Travaux pratiques & manipulations</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(4)">
+        <div class="doc-type-icon" style="--c:#F59E0B"><i class="fas fa-file-alt"></i></div>
+        <h4>Contrôle Continu</h4><p>Épreuves de CC avec barèmes</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(5)">
+        <div class="doc-type-icon" style="--c:#EF4444"><i class="fas fa-graduation-cap"></i></div>
+        <h4>Examen SN</h4><p>Session normale — épreuves finales</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(6)">
+        <div class="doc-type-icon" style="--c:#EC4899"><i class="fas fa-redo"></i></div>
+        <h4>Examen SR</h4><p>Session de rattrapage</p>
+      </div>
+      <div class="doc-type-card" onclick="filterByType(7)">
+        <div class="doc-type-icon" style="--c:#06B6D4"><i class="fas fa-tasks"></i></div>
+        <h4>TPE</h4><p>Travaux pratiques encadrés</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     DERNIERS DOCUMENTS AJOUTÉS
+═══════════════════════════════════════════════ -->
+<section class="section section--light" id="recent">
+  <div class="container">
+    <div class="section-header">
+      <span class="section-tag">Dernières additions</span>
+      <h2>Documents récents</h2>
+    </div>
+    <div id="recentDocsList" class="docs-grid">
+      <!-- Chargé dynamiquement via JS -->
+      <div class="doc-skeleton"></div>
+      <div class="doc-skeleton"></div>
+      <div class="doc-skeleton"></div>
+      <div class="doc-skeleton"></div>
+      <div class="doc-skeleton"></div>
+      <div class="doc-skeleton"></div>
+    </div>
+    <div class="section-cta">
+      <button class="btn-outline" onclick="loadMoreRecent()">
+        <i class="fas fa-plus"></i> Charger plus
+      </button>
+    </div>
+  </div>
+</section>
+
+<!-- ═══════════════════════════════════════════════
+     FOOTER
+═══════════════════════════════════════════════ -->
+<footer class="footer">
+  <div class="container">
+    <div class="footer-grid">
+      <div class="footer-brand">
+        <div class="logo-wrapper">
+          <div class="logo-emblem sm"><span class="logo-u">U</span><span class="logo-t">T</span></div>
+          <div>
+            <span class="brand-main">UnivThèque<span class="brand-accent">Fs</span></span>
+            <span class="brand-sub">Informatique · FS · UNgaoundéré</span>
+          </div>
+        </div>
+        <p>Plateforme d'archives pédagogiques centralisée pour les étudiants et enseignants de la filière informatique.</p>
+      </div>
+      <div class="footer-links">
+        <h5>Navigation</h5>
+        <a href="index.html">Accueil</a>
+        <a href="pages/licence1.html">Licence 1</a>
+        <a href="pages/licence2.html">Licence 2</a>
+        <a href="pages/licence3.html">Licence 3</a>
+      </div>
+      <div class="footer-links">
+        <h5>Documents</h5>
+        <a href="#" onclick="filterByType(1)">Cours</a>
+        <a href="#" onclick="filterByType(2)">TD</a>
+        <a href="#" onclick="filterByType(5)">Examens SN</a>
+        <a href="#" onclick="filterByType(6)">Examens SR</a>
+      </div>
+      <div class="footer-contact">
+        <h5>Établissement</h5>
+        <p><i class="fas fa-university"></i> Université de Ngaoundéré</p>
+        <p><i class="fas fa-flask"></i> Faculté des Sciences</p>
+        <p><i class="fas fa-laptop-code"></i> Filière Informatique</p>
+        <p><i class="fas fa-map-marker-alt"></i> Ngaoundéré, Cameroun</p>
+      </div>
+    </div>
+    <div class="footer-bottom">
+      <p>© 2025 UnivThèqueFs — Tous droits réservés — Informatique FS Ngaoundéré</p>
+      <p>Développé avec <i class="fas fa-heart" style="color:#EF4444"></i> pour les étudiant(e)s</p>
+    </div>
+  </div>
+</footer>
+
+<!-- ═══════════════════════════════════════════════
+     MODAL AUTHENTIFICATION
+═══════════════════════════════════════════════ -->
+<div class="modal-overlay" id="authModal" onclick="closeModal(event)">
+  <div class="modal" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="hideAuthModal()"><i class="fas fa-times"></i></button>
+    <div class="modal-tabs">
+      <button class="modal-tab active" onclick="switchTab('login')">Connexion</button>
+      <button class="modal-tab" onclick="switchTab('register')">Inscription</button>
+    </div>
+
+    <!-- Connexion -->
+    <div id="tab-login" class="modal-body">
+      <div class="modal-icon"><i class="fas fa-lock"></i></div>
+      <div class="form-group">
+        <label>Adresse email</label>
+        <input type="email" id="loginEmail" class="form-input" placeholder="votre@email.cm"/>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe</label>
+        <input type="password" id="loginPassword" class="form-input" placeholder="••••••••"/>
+      </div>
+      <div id="loginError" class="form-error" style="display:none"></div>
+      <label style="display:flex;align-items:center;gap:8px;font-size:.85rem;color:var(--text-muted);cursor:pointer;margin:4px 0 8px">
+  <input type="checkbox" id="rememberMe" style="width:15px;height:15px;cursor:pointer;accent-color:var(--primary)"/>
+  Se souvenir de moi (30 jours)
+</label>
+<button class="btn-primary full" onclick="doLogin()">
+        <i class="fas fa-sign-in-alt"></i> Se connecter
+      </button>
+    </div>
+
+    <!-- Inscription -->
+    <div id="tab-register" class="modal-body" style="display:none">
+      <div class="modal-icon"><i class="fas fa-user-plus"></i></div>
+      <div class="form-row">
+        <div class="form-group">
+          <label>Nom</label>
+          <input type="text" id="regNom" class="form-input" placeholder="Nom"/>
+        </div>
+        <div class="form-group">
+          <label>Prénom</label>
+          <input type="text" id="regPrenom" class="form-input" placeholder="Prénom"/>
+        </div>
+      </div>
+      <div class="form-group">
+        <label>Email</label>
+        <input type="email" id="regEmail" class="form-input" placeholder="votre@email.cm"/>
+      </div>
+      <div class="form-group">
+        <label>Niveau</label>
+        <select id="regNiveau" class="form-select">
+          <option value="1">Licence 1</option>
+          <option value="2">Licence 2</option>
+          <option value="3">Licence 3</option>
+        </select>
+      </div>
+      <div class="form-group">
+        <label>Mot de passe (min. 8 caractères)</label>
+        <input type="password" id="regPassword" class="form-input" placeholder="••••••••"/>
+      </div>
+      <div id="regError" class="form-error" style="display:none"></div>
+      <button class="btn-primary full" onclick="doRegister()">
+        <i class="fas fa-user-plus"></i> S'inscrire
+      </button>
+    </div>
+  </div>
+</div>
+
+<!-- TOAST -->
+<div id="toast" class="toast"></div>
+
+<script src="js/main.js"></script>
+<script src="js/search.js"></script>
+<script src="js/cookies.js"></script>
+</body>
+</html>

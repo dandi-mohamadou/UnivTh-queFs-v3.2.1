@@ -1,0 +1,23 @@
+# ── Fichiers uploadés (ne pas mettre sur GitHub) ──
+backend/uploads/*
+!backend/uploads/.gitkeep
+
+# ── Scripts temporaires de setup (à supprimer avant push) ──
+setup.php
+fix_admin.php
+debug.php
+test_upload.php
+reset_password.php
+create_admin.php
+
+# ── Système ──
+.DS_Store
+Thumbs.db
+desktop.ini
+*.log
+error_log
+
+# ── IDE ──
+.vscode/
+.idea/
+*.sublime-project

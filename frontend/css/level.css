@@ -1,0 +1,126 @@
+/* ============================================================
+   UnivThèqueFs — Styles pages Niveaux (L1/L2/L3)
+   css/level.css
+   ============================================================ */
+
+/* ── Level Hero ── */
+.level-hero {
+  padding: calc(var(--nav-h) + 50px) 24px 50px;
+  position: relative; overflow: hidden;
+}
+.level-hero--l1 { background: linear-gradient(135deg, #1E3A8A 0%, #2563EB 100%); }
+.level-hero--l2 { background: linear-gradient(135deg, #4C1D95 0%, #7C3AED 100%); }
+.level-hero--l3 { background: linear-gradient(135deg, #064E3B 0%, #059669 100%); }
+
+.breadcrumb {
+  display: flex; align-items: center; gap: 8px;
+  color: rgba(255,255,255,.6); font-size: .82rem; margin-bottom: 28px;
+}
+.breadcrumb a { color: rgba(255,255,255,.7); }
+.breadcrumb a:hover { color: #fff; }
+.breadcrumb i { font-size: .65rem; }
+
+.level-hero__content { display: flex; align-items: center; gap: 24px; }
+.level-hero__badge {
+  width: 70px; height: 70px; border-radius: 18px; flex-shrink: 0;
+  background: rgba(255,255,255,.2); backdrop-filter: blur(10px);
+  border: 2px solid rgba(255,255,255,.3);
+  display: flex; align-items: center; justify-content: center;
+  font-family: var(--font-display); font-size: 1.6rem; font-weight: 900;
+  color: #fff;
+}
+.level-hero__content h1 {
+  font-family: var(--font-display); font-size: clamp(1.8rem, 4vw, 3rem);
+  font-weight: 900; color: #fff; line-height: 1.1;
+}
+.level-hero__content h1 span { opacity: .7; font-weight: 600; font-size: .7em; }
+.level-hero__content > div > p { color: rgba(255,255,255,.65); margin-top: 8px; font-size: .95rem; }
+
+/* ── Semester Block ── */
+.semester-block {
+  margin-bottom: 60px;
+}
+.semester-header {
+  display: flex; align-items: center; gap: 20px;
+  margin-bottom: 28px;
+  padding-bottom: 20px;
+  border-bottom: 2px solid var(--border);
+}
+.semester-num {
+  width: 52px; height: 52px; border-radius: 14px; flex-shrink: 0;
+  background: linear-gradient(135deg, var(--primary), var(--accent));
+  color: #fff; font-family: var(--font-display); font-weight: 800; font-size: 1rem;
+  display: flex; align-items: center; justify-content: center;
+}
+.semester-header h2 {
+  font-family: var(--font-display); font-size: 1.5rem; font-weight: 800;
+  color: var(--text); margin-bottom: 4px;
+}
+.semester-header p { color: var(--text-muted); font-size: .88rem; }
+
+/* ── UE Grid ── */
+.ue-grid {
+  display: grid; grid-template-columns: repeat(3, 1fr); gap: 20px;
+}
+.ue-card {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg);
+  display: flex; flex-direction: column;
+  transition: all .3s; overflow: hidden;
+}
+.ue-card:hover { transform: translateY(-4px); box-shadow: var(--shadow-lg); }
+
+.ue-card__code {
+  padding: 14px 20px;
+  font-family: var(--font-display); font-size: 1rem; font-weight: 800;
+  letter-spacing: .04em; color: #fff;
+}
+.ue-card__code.l1 { background: linear-gradient(135deg, #1D4ED8, #3B82F6); }
+.ue-card__code.l2 { background: linear-gradient(135deg, #6D28D9, #8B5CF6); }
+.ue-card__code.l3 { background: linear-gradient(135deg, #047857, #10B981); }
+
+.ue-card__body { padding: 16px 20px; flex: 1; }
+.ue-card__body h4 { font-weight: 700; font-size: .95rem; color: var(--text); margin-bottom: 8px; line-height: 1.4; }
+.ue-card__meta { display: flex; gap: 10px; font-size: .78rem; color: var(--text-muted); margin-bottom: 10px; }
+.ue-doc-counts { display: flex; gap: 8px; flex-wrap: wrap; }
+.dc {
+  font-size: .72rem; font-weight: 600; padding: 3px 8px; border-radius: 4px;
+}
+.dc.cours { background: rgba(59,130,246,.1); color: #3B82F6; }
+.dc.td    { background: rgba(16,185,129,.1); color: #10B981; }
+.dc.exam  { background: rgba(239,68,68,.1);  color: #EF4444; }
+
+.ue-card__btn {
+  margin: 0 16px 16px;
+  padding: 10px 16px; border-radius: 10px;
+  background: var(--bg); border: 1.5px solid var(--border);
+  color: var(--primary); font-size: .85rem; font-weight: 600;
+  display: flex; align-items: center; justify-content: center; gap: 8px;
+  transition: all .2s;
+}
+.ue-card__btn:hover { background: var(--primary); color: #fff; border-color: var(--primary); }
+
+/* Modal Wide */
+.modal-wide { max-width: 680px; max-height: 85vh; overflow-y: auto; }
+
+/* ── Admin Panel ── */
+.admin-panel {
+  background: var(--bg-card); border: 1.5px solid var(--border);
+  border-radius: var(--radius-lg); padding: 32px; margin-bottom: 32px;
+}
+.upload-zone {
+  border: 2px dashed var(--border); border-radius: var(--radius);
+  padding: 40px; text-align: center; cursor: pointer;
+  transition: all .3s;
+}
+.upload-zone:hover, .upload-zone.drag { border-color: var(--primary); background: rgba(26,86,219,.04); }
+.upload-zone i { font-size: 2rem; color: var(--text-light); margin-bottom: 12px; }
+
+/* ── Responsive ── */
+@media (max-width: 900px) {
+  .ue-grid { grid-template-columns: repeat(2, 1fr); }
+}
+@media (max-width: 600px) {
+  .ue-grid { grid-template-columns: 1fr; }
+  .level-hero__content { flex-direction: column; text-align: center; }
+}

@@ -1,0 +1,522 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Administration — UnivThèqueFs</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    body { background: var(--bg); }
+    .admin-layout { display: flex; min-height: 100vh; padding-top: 70px; }
+    /* Sidebar */
+    .admin-sidebar { width: 240px; background: var(--surface); border-right: 1px solid var(--border); padding: 24px 0; position: fixed; top: 70px; left: 0; bottom: 0; overflow-y: auto; }
+    .sidebar-section { padding: 0 16px; margin-bottom: 8px; }
+    .sidebar-label { font-size: .68rem; font-weight: 700; text-transform: uppercase; letter-spacing: .08em; color: var(--text-muted); padding: 8px 12px 4px; }
+    .sidebar-item { display: flex; align-items: center; gap: 10px; padding: 10px 12px; border-radius: var(--radius); color: var(--text-muted); font-size: .88rem; font-weight: 500; cursor: pointer; transition: all .2s; border: none; background: none; width: 100%; text-align: left; }
+    .sidebar-item:hover, .sidebar-item.active { background: var(--primary-light); color: var(--primary); }
+    .sidebar-item i { width: 16px; text-align: center; }
+    /* Main */
+    .admin-main { margin-left: 240px; flex: 1; padding: 32px; }
+    .admin-topbar { display: flex; align-items: center; justify-content: space-between; margin-bottom: 32px; }
+    .admin-topbar h1 { font-family: var(--font-display); font-size: 1.4rem; font-weight: 800; }
+    /* Stats */
+    .stat-cards { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 16px; margin-bottom: 32px; }
+    .stat-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 20px; }
+    .stat-card__icon { width: 40px; height: 40px; border-radius: 10px; display: flex; align-items: center; justify-content: center; font-size: 1rem; margin-bottom: 12px; }
+    .stat-card__val { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--text); }
+    .stat-card__lbl { font-size: .78rem; color: var(--text-muted); margin-top: 2px; }
+    /* Upload form */
+    .upload-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 32px; margin-bottom: 24px; }
+    .upload-card h2 { font-family: var(--font-display); font-size: 1.1rem; font-weight: 700; margin-bottom: 24px; display: flex; align-items: center; gap: 8px; }
+    .form-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(260px, 1fr)); gap: 16px; }
+    .form-group { display: flex; flex-direction: column; gap: 6px; }
+    .form-group label { font-size: .78rem; font-weight: 600; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    .form-group input, .form-group select, .form-group textarea {
+      padding: 10px 14px; border-radius: var(--radius); border: 1px solid var(--border);
+      background: var(--bg); color: var(--text); font-family: var(--font-body); font-size: .9rem;
+      transition: border-color .2s;
+    }
+    .form-group input:focus, .form-group select:focus, .form-group textarea:focus {
+      outline: none; border-color: var(--primary); box-shadow: 0 0 0 3px var(--primary-light);
+    }
+    .drop-zone { border: 2px dashed var(--border); border-radius: var(--radius-lg); padding: 40px; text-align: center; cursor: pointer; transition: all .2s; position: relative; }
+    .drop-zone:hover, .drop-zone.drag-over { border-color: var(--primary); background: var(--primary-light); }
+    .drop-zone input[type=file] { position: absolute; inset: 0; opacity: 0; cursor: pointer; width: 100%; height: 100%; }
+    .drop-icon { font-size: 2.5rem; color: var(--text-muted); margin-bottom: 12px; }
+    .drop-text { color: var(--text-muted); font-size: .9rem; }
+    .drop-hint { font-size: .78rem; color: var(--text-muted); opacity: .7; margin-top: 4px; }
+    .btn-submit { padding: 12px 32px; border-radius: var(--radius); background: var(--primary); color: #fff; font-weight: 700; font-size: .95rem; border: none; cursor: pointer; display: inline-flex; align-items: center; gap: 8px; transition: all .2s; }
+    .btn-submit:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-submit:disabled { opacity: .6; cursor: not-allowed; transform: none; }
+    /* Documents table */
+    .docs-table { width: 100%; border-collapse: collapse; font-size: .88rem; }
+    .docs-table th { padding: 10px 14px; text-align: left; font-size: .72rem; font-weight: 700; text-transform: uppercase; letter-spacing: .06em; color: var(--text-muted); background: var(--bg); border-bottom: 1px solid var(--border); }
+    .docs-table td { padding: 12px 14px; border-bottom: 1px solid var(--border); vertical-align: middle; }
+    .docs-table tr:hover td { background: var(--bg); }
+    .status-badge { display: inline-flex; align-items: center; gap: 4px; padding: 3px 10px; border-radius: 20px; font-size: .72rem; font-weight: 700; }
+    .status-publie { background: #D1FAE5; color: #059669; }
+    .status-attente { background: #FEF3C7; color: #D97706; }
+    .status-refuse { background: #FEE2E2; color: #DC2626; }
+    .action-btns { display: flex; gap: 6px; }
+    .action-btn { padding: 5px 10px; border-radius: 6px; border: 1px solid var(--border); background: none; cursor: pointer; font-size: .78rem; color: var(--text-muted); transition: all .2s; }
+    .action-btn:hover { border-color: var(--primary); color: var(--primary); }
+    .action-btn.danger:hover { border-color: #EF4444; color: #EF4444; }
+    .progress-bar { width: 100%; height: 6px; background: var(--border); border-radius: 3px; overflow: hidden; margin-top: 12px; display: none; }
+    .progress-fill { height: 100%; background: var(--primary); border-radius: 3px; transition: width .3s; }
+    /* Login wall */
+    #loginWall { display: none; position: fixed; inset: 0; background: var(--bg); z-index: 200; display: flex; align-items: center; justify-content: center; flex-direction: column; gap: 16px; }
+    .login-wall-card { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 48px; text-align: center; max-width: 380px; width: 100%; }
+    @media(max-width:800px){ .admin-sidebar{display:none} .admin-main{margin-left:0} }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-brand">
+      <div class="logo-wrapper">
+        <div class="logo-emblem"><span class="logo-u">U</span><span class="logo-t">T</span></div>
+        <div class="logo-text">
+          <span class="brand-main">UnivThèque<span class="brand-accent">Fs</span></span>
+          <span class="brand-sub">Informatique · FS</span>
+        </div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i> Accueil</a>
+    </div>
+    <button class="btn-login" onclick="doLogout()"><i class="fas fa-sign-out-alt"></i> Déconnexion</button>
+  </div>
+</nav>
+
+<!-- Admin Layout -->
+<div class="admin-layout" id="adminLayout" style="display:none">
+  <aside class="admin-sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-label">Navigation</div>
+      <button class="sidebar-item active" onclick="showPanel('dashboard')"><i class="fas fa-chart-line"></i> Tableau de bord</button>
+      <button class="sidebar-item" onclick="showPanel('upload')"><i class="fas fa-upload"></i> Ajouter un document</button>
+      <button class="sidebar-item" onclick="showPanel('documents')"><i class="fas fa-folder"></i> Gérer les documents</button>
+    </div>
+    <div class="sidebar-section">
+      <div class="sidebar-label">Accès rapide</div>
+      <button class="sidebar-item" onclick="window.open('../index.html')"><i class="fas fa-external-link-alt"></i> Voir le site</button>
+    </div>
+  </aside>
+
+  <main class="admin-main">
+    <!-- Dashboard Panel -->
+    <div id="panel-dashboard">
+      <div class="admin-topbar">
+        <h1><i class="fas fa-chart-line" style="color:var(--primary)"></i> Tableau de bord</h1>
+        <span id="adminGreeting" style="color:var(--text-muted);font-size:.85rem"></span>
+      </div>
+      <div class="stat-cards" id="statCards">
+        <div class="stat-card"><div class="stat-card__icon" style="background:#EFF6FF;color:#3B82F6"><i class="fas fa-file-alt"></i></div><div class="stat-card__val" id="stat-total">—</div><div class="stat-card__lbl">Documents total</div></div>
+        <div class="stat-card"><div class="stat-card__icon" style="background:#F0FDF4;color:#22C55E"><i class="fas fa-check-circle"></i></div><div class="stat-card__val" id="stat-publie">—</div><div class="stat-card__lbl">Publiés</div></div>
+        <div class="stat-card"><div class="stat-card__icon" style="background:#FFFBEB;color:#F59E0B"><i class="fas fa-clock"></i></div><div class="stat-card__val" id="stat-attente">—</div><div class="stat-card__lbl">En attente</div></div>
+        <div class="stat-card"><div class="stat-card__icon" style="background:#FFF1F2;color:#EF4444"><i class="fas fa-download"></i></div><div class="stat-card__val" id="stat-dl">—</div><div class="stat-card__lbl">Téléchargements</div></div>
+      </div>
+      <div class="upload-card">
+        <h2><i class="fas fa-history" style="color:var(--primary)"></i> Derniers documents ajoutés</h2>
+        <div id="recentDocs"><div style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fas fa-circle-notch fa-spin fa-2x"></i></div></div>
+      </div>
+    </div>
+
+    <!-- Upload Panel -->
+    <div id="panel-upload" style="display:none">
+      <div class="admin-topbar">
+        <h1><i class="fas fa-upload" style="color:var(--primary)"></i> Ajouter un document</h1>
+      </div>
+      <div class="upload-card">
+        <h2><i class="fas fa-info-circle" style="color:var(--primary)"></i> Informations du document</h2>
+        <div class="form-grid">
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Titre du document *</label>
+            <input type="text" id="f-titre" placeholder="ex: Examen Final Analyse 1 — 2023/2024"/>
+          </div>
+          <div class="form-group">
+            <label>Unité d'enseignement *</label>
+            <select id="f-ue"><option value="">— Sélectionner une UE —</option></select>
+          </div>
+          <div class="form-group">
+            <label>Type de document *</label>
+            <select id="f-type">
+              <option value="">— Type —</option>
+              <option value="1">Cours</option>
+              <option value="2">Travaux Dirigés (TD)</option>
+              <option value="3">Travaux Pratiques (TP)</option>
+              <option value="4">Contrôle Continu (CC)</option>
+              <option value="5">Examen Session Normale</option>
+              <option value="6">Examen Session Rattrapage</option>
+              <option value="7">TPE</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label>Professeur</label>
+            <select id="f-prof"><option value="">— Sélectionner —</option></select>
+          </div>
+          <div class="form-group">
+            <label>Année académique</label>
+            <select id="f-annee"><option value="">— Année —</option></select>
+          </div>
+          <div class="form-group" style="grid-column:1/-1">
+            <label>Description (optionnel)</label>
+            <textarea id="f-desc" rows="3" placeholder="Contenu, chapitres abordés..."></textarea>
+          </div>
+        </div>
+      </div>
+      <div class="upload-card">
+        <h2><i class="fas fa-file-upload" style="color:var(--primary)"></i> Fichier</h2>
+        <div class="drop-zone" id="dropZone">
+          <input type="file" id="f-file" accept=".pdf,.doc,.docx" onchange="onFileSelected(event)"/>
+          <div class="drop-icon"><i class="fas fa-cloud-upload-alt"></i></div>
+          <div class="drop-text">Glissez-déposez un fichier ici ou <strong style="color:var(--primary)">parcourir</strong></div>
+          <div class="drop-hint">Formats acceptés : PDF, DOC, DOCX · Taille max : 20 Mo</div>
+          <div id="fileSelected" style="display:none;margin-top:12px;padding:10px 16px;background:var(--primary-light);color:var(--primary);border-radius:8px;font-weight:600;font-size:.85rem"></div>
+        </div>
+        <div class="progress-bar" id="uploadProgress"><div class="progress-fill" id="progressFill" style="width:0%"></div></div>
+        <div style="margin-top:20px;display:flex;gap:12px;align-items:center">
+          <button class="btn-submit" id="btnSubmit" onclick="submitDocument()"><i class="fas fa-upload"></i> Publier le document</button>
+          <span id="uploadStatus" style="font-size:.85rem;color:var(--text-muted)"></span>
+        </div>
+      </div>
+    </div>
+
+    <!-- Documents Panel -->
+    <div id="panel-documents" style="display:none">
+      <div class="admin-topbar">
+        <h1><i class="fas fa-folder" style="color:var(--primary)"></i> Gérer les documents</h1>
+        <button class="btn-submit" style="padding:10px 20px;font-size:.85rem" onclick="showPanel('upload')"><i class="fas fa-plus"></i> Nouveau</button>
+      </div>
+      <div class="upload-card">
+        <div style="display:flex;gap:12px;margin-bottom:20px">
+          <input type="text" id="searchDocs" placeholder="Rechercher..." style="flex:1;padding:10px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem" oninput="filterDocs()"/>
+          <select id="filterStatus" onchange="filterDocs()" style="padding:10px 14px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem">
+            <option value="">Tous les statuts</option>
+            <option value="publie">Publiés</option>
+            <option value="en_attente">En attente</option>
+            <option value="refuse">Refusés</option>
+          </select>
+        </div>
+        <div style="overflow-x:auto">
+          <table class="docs-table" id="docsTable">
+            <thead><tr>
+              <th>Titre</th><th>UE</th><th>Type</th><th>Professeur</th><th>Statut</th><th>Actions</th>
+            </tr></thead>
+            <tbody id="docsTbody"><tr><td colspan="6" style="text-align:center;padding:40px;color:var(--text-muted)"><i class="fas fa-circle-notch fa-spin"></i> Chargement...</td></tr></tbody>
+          </table>
+        </div>
+        <div id="docsPagination" style="display:flex;justify-content:center;gap:8px;margin-top:20px"></div>
+      </div>
+    </div>
+  </main>
+</div>
+
+<!-- Login Wall -->
+<div id="loginWall">
+  <div class="login-wall-card">
+    <div style="font-size:3rem;color:var(--primary);margin-bottom:16px"><i class="fas fa-lock"></i></div>
+    <h2 style="font-family:var(--font-display);font-size:1.3rem;margin-bottom:8px">Accès Administration</h2>
+    <p style="color:var(--text-muted);font-size:.88rem;margin-bottom:24px">Connectez-vous avec un compte administrateur pour accéder à ce tableau de bord.</p>
+    <div style="display:flex;flex-direction:column;gap:12px">
+      <input type="email" id="aw-email" placeholder="Email administrateur" style="padding:12px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem"/>
+      <input type="password" id="aw-pass" placeholder="Mot de passe" style="padding:12px 16px;border-radius:var(--radius);border:1px solid var(--border);background:var(--bg);color:var(--text);font-size:.9rem" onkeydown="if(event.key==='Enter')adminLogin()"/>
+      <button class="btn-submit" style="width:100%;justify-content:center" onclick="adminLogin()"><i class="fas fa-sign-in-alt"></i> Se connecter</button>
+    </div>
+    <p style="margin-top:16px"><a href="../index.html" style="color:var(--text-muted);font-size:.83rem">← Retour au site</a></p>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+<script>
+const _base = window.location.pathname.split('/frontend/')[0];
+const API = _base + '/backend/api/index.php';
+let allDocs = [];
+
+/* ── Auth ── */
+async function adminLogin() {
+  const email = document.getElementById('aw-email').value;
+  const pass = document.getElementById('aw-pass').value;
+  if (!email || !pass) { showToast('Remplissez tous les champs', 'error'); return; }
+  try {
+    const res = await fetch(`${API}/auth/login`, {
+      method: 'POST',
+      headers: { 'Content-Type': 'application/json' },
+      body: JSON.stringify({ email, password: pass })
+    });
+    const data = await res.json();
+    if (!res.ok) { showToast(data.message || 'Identifiants incorrects', 'error'); return; }
+    if (data.user?.role !== 'admin') { showToast('Accès réservé aux administrateurs', 'error'); return; }
+    localStorage.setItem('ut_token', data.token);
+    localStorage.setItem('ut_user', JSON.stringify(data.user));
+    document.getElementById('loginWall').style.display = 'none';
+    document.getElementById('adminLayout').style.display = 'flex';
+    document.getElementById('adminGreeting').textContent = `Bonjour, ${data.user.prenom || data.user.nom}`;
+    await initAdmin();
+  } catch { showToast('Erreur de connexion', 'error'); }
+}
+
+function doLogout() {
+  localStorage.removeItem('ut_token');
+  localStorage.removeItem('ut_user');
+  window.location.href = '../index.html';
+}
+
+/* ── Init ── */
+async function checkAuth() {
+  const token = localStorage.getItem('ut_token');
+  const user = JSON.parse(localStorage.getItem('ut_user') || 'null');
+  if (!token || !user || user.role !== 'admin') {
+    document.getElementById('loginWall').style.display = 'flex';
+  } else {
+    document.getElementById('loginWall').style.display = 'none';
+    document.getElementById('adminLayout').style.display = 'flex';
+    document.getElementById('adminGreeting').textContent = `Bonjour, ${user.prenom || user.nom}`;
+    initAdmin();
+  }
+}
+
+async function initAdmin() {
+  await loadStats();
+  await loadSelectOptions();
+  await loadRecentDocs();
+}
+
+async function loadStats() {
+  try {
+    const res = await fetch(`${API}/stats`);
+    const data = await res.json();
+    document.getElementById('stat-total').textContent = data.total_documents ?? '—';
+    document.getElementById('stat-publie').textContent = data.publies ?? '—';
+    document.getElementById('stat-attente').textContent = data.en_attente ?? '—';
+    document.getElementById('stat-dl').textContent = data.telechargements ?? '—';
+  } catch {}
+}
+
+async function loadSelectOptions() {
+  try {
+    const token = localStorage.getItem('ut_token');
+    const headers = token ? { 'Authorization': 'Bearer ' + token } : {};
+    const [ues, profs, annees] = await Promise.all([
+      fetch(`${API}/ues`, {headers}).then(r => r.json()),
+      fetch(`${API}/professeurs`, {headers}).then(r => r.json()),
+      fetch(`${API}/annees`, {headers}).then(r => r.json())
+    ]);
+    // UEs
+    const selUE = document.getElementById('f-ue');
+    (Array.isArray(ues) ? ues : []).forEach(u =>
+      selUE.innerHTML += `<option value="${u.id}">[${u.code}] ${u.intitule}</option>`);
+    // Professeurs — l'API retourne nom_complet
+    const selProf = document.getElementById('f-prof');
+    (Array.isArray(profs) ? profs : []).forEach(p =>
+      selProf.innerHTML += `<option value="${p.id}">${p.nom_complet || p.nom || '—'}</option>`);
+    // Années — l'API retourne intitule
+    const selAnnee = document.getElementById('f-annee');
+    (Array.isArray(annees) ? annees : []).forEach(a =>
+      selAnnee.innerHTML += `<option value="${a.id}">${a.intitule || a.annee || '—'}</option>`);
+  } catch(e) { console.error('loadSelectOptions:', e); }
+}
+
+async function loadRecentDocs() {
+  try {
+    const res = await fetch(`${API}/documents?limit=8&statut=publie`);
+    const data = await res.json();
+    const cont = document.getElementById('recentDocs');
+    if (!data.data?.length) { cont.innerHTML = '<p style="color:var(--text-muted);text-align:center;padding:20px">Aucun document publié.</p>'; return; }
+    cont.innerHTML = `<div style="overflow-x:auto"><table class="docs-table"><thead><tr><th>Titre</th><th>UE</th><th>Type</th><th>Statut</th></tr></thead><tbody>
+    ${data.data.map(d => `<tr>
+      <td style="font-weight:600">${d.titre}</td>
+      <td><span style="font-family:monospace;font-size:.78rem;color:var(--primary)">${d.code_ue||'—'}</span></td>
+      <td>${d.type_label||d.type_code||'—'}</td>
+      <td><span class="status-badge status-publie"><i class="fas fa-circle" style="font-size:.5rem"></i> Publié</span></td>
+    </tr>`).join('')}
+    </tbody></table></div>`;
+  } catch {}
+}
+
+/* ── Upload ── */
+function onFileSelected(e) {
+  const file = e.target.files[0];
+  if (!file) return;
+  const sel = document.getElementById('fileSelected');
+  sel.style.display = 'block';
+  sel.innerHTML = `<i class="fas fa-file-pdf"></i> ${file.name} (${(file.size/1024/1024).toFixed(2)} Mo)`;
+}
+
+async function submitDocument() {
+  const titre = document.getElementById('f-titre').value.trim();
+  const ue    = document.getElementById('f-ue').value;
+  const type  = document.getElementById('f-type').value;
+  const file  = document.getElementById('f-file').files[0];
+
+  if (!titre || !ue || !type || !file) {
+    showToast('Titre, UE, type et fichier sont obligatoires.', 'error'); return;
+  }
+
+  // Lire le token depuis toutes les clés possibles
+  const token = localStorage.getItem('ut_token') || localStorage.getItem('token') || '';
+  if (!token) {
+    showToast('Session expirée — reconnectez-vous', 'error');
+    localStorage.clear();
+    location.reload();
+    return;
+  }
+
+  const fd = new FormData();
+  fd.append('titre',         titre);
+  fd.append('ue_id',         ue);
+  fd.append('type_doc_id',   type);
+  fd.append('professeur_id', document.getElementById('f-prof').value);
+  fd.append('annee_id',      document.getElementById('f-annee').value);
+  fd.append('description',   document.getElementById('f-desc').value);
+  fd.append('fichier',       file);
+
+  const btn = document.getElementById('btnSubmit');
+  const status = document.getElementById('uploadStatus');
+  const bar = document.getElementById('uploadProgress');
+  const fill = document.getElementById('progressFill');
+  btn.disabled = true;
+  bar.style.display = 'block';
+  status.textContent = 'Envoi en cours...';
+
+  // Simulate progress (XHR for real progress)
+  let prog = 0;
+  const iv = setInterval(() => { prog = Math.min(prog + 8, 85); fill.style.width = prog + '%'; }, 200);
+
+  try {
+    const res = await fetch(`${API}/documents`, {
+      method: 'POST',
+      headers: { 'Authorization': 'Bearer ' + token },
+      body: fd
+    });
+    clearInterval(iv);
+    fill.style.width = '100%';
+    const data = await res.json();
+    if (!res.ok) throw new Error(data.message || 'Erreur serveur');
+    showToast('Document ajouté avec succès !');
+    status.textContent = '✓ Document publié';
+    // Reset form
+    setTimeout(() => {
+      document.getElementById('f-titre').value = '';
+      document.getElementById('f-desc').value = '';
+      document.getElementById('f-file').value = '';
+      document.getElementById('fileSelected').style.display = 'none';
+      fill.style.width = '0%';
+      bar.style.display = 'none';
+      status.textContent = '';
+      btn.disabled = false;
+    }, 2000);
+    loadStats();
+  } catch (e) {
+    clearInterval(iv);
+    showToast(e.message || 'Erreur lors de l\'envoi', 'error');
+    status.textContent = '✗ Échec';
+    fill.style.width = '0%';
+    bar.style.display = 'none';
+    btn.disabled = false;
+  }
+}
+
+/* ── Documents table ── */
+async function loadAllDocs() {
+  try {
+    const token = localStorage.getItem('ut_token');
+    const res = await fetch(`${API}/documents?limit=100`, { headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    allDocs = data.data || [];
+    renderDocs(allDocs);
+  } catch { document.getElementById('docsTbody').innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:30px">Erreur de chargement.</td></tr>'; }
+}
+
+function renderDocs(docs) {
+  const tbody = document.getElementById('docsTbody');
+  if (!docs.length) { tbody.innerHTML = '<tr><td colspan="6" style="text-align:center;color:var(--text-muted);padding:30px">Aucun document.</td></tr>'; return; }
+  tbody.innerHTML = docs.map(d => `<tr>
+    <td style="font-weight:600;max-width:220px;overflow:hidden;text-overflow:ellipsis;white-space:nowrap" title="${d.titre}">${d.titre}</td>
+    <td><code style="font-size:.78rem;color:var(--primary)">${d.code_ue||'—'}</code></td>
+    <td style="font-size:.82rem">${d.type_label||d.type_code||'—'}</td>
+    <td style="font-size:.82rem">${d.professeur||'—'}</td>
+    <td><span class="status-badge status-${d.statut||'attente'}"><i class="fas fa-circle" style="font-size:.45rem"></i> ${d.statut==='publie'?'Publié':d.statut==='refuse'?'Refusé':'En attente'}</span></td>
+    <td><div class="action-btns">
+      <button class="action-btn" onclick="changeStatut(${d.id},'publie')" title="Publier"><i class="fas fa-check"></i></button>
+      <button class="action-btn" onclick="changeStatut(${d.id},'refuse')" title="Refuser"><i class="fas fa-ban"></i></button>
+      <button class="action-btn danger" onclick="deleteDoc(${d.id})" title="Supprimer"><i class="fas fa-trash"></i></button>
+    </div></td>
+  </tr>`).join('');
+}
+
+function filterDocs() {
+  const q = document.getElementById('searchDocs').value.toLowerCase();
+  const st = document.getElementById('filterStatus').value;
+  const filtered = allDocs.filter(d =>
+    (!q || d.titre.toLowerCase().includes(q) || (d.code_ue||'').toLowerCase().includes(q)) &&
+    (!st || d.statut === st)
+  );
+  renderDocs(filtered);
+}
+
+async function changeStatut(id, statut) {
+  const token = localStorage.getItem('ut_token');
+  try {
+    await fetch(`${API}/documents/${id}/statut`, {
+      method: 'PATCH',
+      headers: { 'Authorization': 'Bearer ' + token, 'Content-Type': 'application/json' },
+      body: JSON.stringify({ statut })
+    });
+    showToast('Statut mis à jour');
+    loadAllDocs();
+    loadStats();
+  } catch { showToast('Erreur', 'error'); }
+}
+
+async function deleteDoc(id) {
+  if (!confirm('Supprimer ce document définitivement ?')) return;
+  const token = localStorage.getItem('ut_token');
+  try {
+    await fetch(`${API}/documents/${id}`, { method: 'DELETE', headers: { 'Authorization': 'Bearer ' + token } });
+    showToast('Document supprimé');
+    loadAllDocs();
+    loadStats();
+  } catch { showToast('Erreur', 'error'); }
+}
+
+/* ── Panels ── */
+function showPanel(name) {
+  ['dashboard','upload','documents'].forEach(p => {
+    const el = document.getElementById(`panel-${p}`);
+    if (el) el.style.display = p === name ? '' : 'none';
+  });
+  document.querySelectorAll('.sidebar-item').forEach((b,i) => b.classList.toggle('active', i === ['dashboard','upload','documents'].indexOf(name)));
+  if (name === 'documents') loadAllDocs();
+}
+
+/* ── Toast ── */
+function showToast(msg, type = 'success') {
+  const t = document.getElementById('toast');
+  t.textContent = msg;
+  t.className = `toast toast--${type} show`;
+  setTimeout(() => t.classList.remove('show'), 3000);
+}
+
+/* ── Drag & Drop ── */
+const dz = document.getElementById('dropZone');
+dz?.addEventListener('dragover', e => { e.preventDefault(); dz.classList.add('drag-over'); });
+dz?.addEventListener('dragleave', () => dz.classList.remove('drag-over'));
+dz?.addEventListener('drop', e => {
+  e.preventDefault(); dz.classList.remove('drag-over');
+  const file = e.dataTransfer.files[0];
+  if (file) {
+    document.getElementById('f-file').files = e.dataTransfer.files;
+    const sel = document.getElementById('fileSelected');
+    sel.style.display = 'block';
+    sel.innerHTML = `<i class="fas fa-file-pdf"></i> ${file.name} (${(file.size/1024/1024).toFixed(2)} Mo)`;
+  }
+});
+
+checkAuth();
+</script>
+<script src="../js/cookies.js"></script>
+</body>
+</html>

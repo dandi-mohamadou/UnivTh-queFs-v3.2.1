@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Document — UnivThèqueFs</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+  <style>
+    .doc-page { max-width: 860px; margin: 100px auto 60px; padding: 0 20px; }
+    .doc-header { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; margin-bottom: 24px; }
+    .doc-type-badge { display: inline-flex; align-items: center; gap: 6px; padding: 5px 14px; border-radius: 20px; font-size: .75rem; font-weight: 700; letter-spacing: .04em; text-transform: uppercase; margin-bottom: 16px; background: var(--primary-light); color: var(--primary); }
+    .doc-title { font-family: var(--font-display); font-size: 1.8rem; font-weight: 800; color: var(--text); line-height: 1.2; margin-bottom: 8px; }
+    .doc-ue { font-size: .95rem; color: var(--primary); font-weight: 600; margin-bottom: 20px; }
+    .doc-meta-grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(180px, 1fr)); gap: 12px; margin-top: 24px; padding-top: 24px; border-top: 1px solid var(--border); }
+    .doc-meta-item { display: flex; align-items: center; gap: 10px; }
+    .doc-meta-icon { width: 36px; height: 36px; border-radius: 8px; background: var(--bg); display: flex; align-items: center; justify-content: center; color: var(--primary); font-size: .9rem; flex-shrink: 0; }
+    .doc-meta-label { font-size: .7rem; color: var(--text-muted); text-transform: uppercase; letter-spacing: .05em; }
+    .doc-meta-val { font-size: .9rem; font-weight: 600; color: var(--text); }
+    .doc-actions { display: flex; gap: 12px; flex-wrap: wrap; margin-top: 28px; }
+    .btn-dl { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius); background: var(--primary); color: #fff; font-weight: 700; font-size: .9rem; border: none; cursor: pointer; transition: all .2s; text-decoration: none; }
+    .btn-dl:hover { background: var(--primary-dark); transform: translateY(-1px); }
+    .btn-fav { display: inline-flex; align-items: center; gap: 8px; padding: 12px 24px; border-radius: var(--radius); background: transparent; color: var(--text); font-weight: 600; font-size: .9rem; border: 1px solid var(--border); cursor: pointer; transition: all .2s; }
+    .btn-fav:hover { border-color: var(--primary); color: var(--primary); }
+    .doc-preview { background: var(--surface); border: 1px solid var(--border); border-radius: var(--radius-lg); padding: 36px; text-align: center; }
+    .preview-icon { font-size: 4rem; color: #EF4444; margin-bottom: 16px; }
+    .preview-text { color: var(--text-muted); font-size: .9rem; margin-bottom: 20px; }
+    .doc-skeleton { animation: pulse 1.5s ease-in-out infinite; }
+    @keyframes pulse { 0%,100%{opacity:1} 50%{opacity:.4} }
+    .skel-line { height: 16px; border-radius: 6px; background: var(--border); margin-bottom: 12px; }
+    .tag-list { display: flex; gap: 8px; flex-wrap: wrap; margin-top: 12px; }
+    .tag { padding: 4px 12px; border-radius: 20px; background: var(--bg); border: 1px solid var(--border); font-size: .78rem; color: var(--text-muted); font-weight: 500; }
+    .back-link { display: inline-flex; align-items: center; gap: 6px; color: var(--text-muted); font-size: .85rem; text-decoration: none; margin-bottom: 24px; transition: color .2s; }
+    .back-link:hover { color: var(--primary); }
+  </style>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-brand">
+      <div class="logo-wrapper">
+        <div class="logo-emblem"><span class="logo-u">U</span><span class="logo-t">T</span></div>
+        <div class="logo-text">
+          <span class="brand-main">UnivThèque<span class="brand-accent">Fs</span></span>
+          <span class="brand-sub">Informatique · FS</span>
+        </div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i></a>
+      <a href="licence1.html" class="nav-link">L1</a>
+      <a href="licence2.html" class="nav-link">L2</a>
+      <a href="licence3.html" class="nav-link">L3</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="admin.html" class="btn-admin-nav" title="Administration"
+        style="padding:8px 14px;border-radius:8px;background:#F59E0B;color:#fff;
+        font-weight:700;font-size:.82rem;text-decoration:none;display:inline-flex;
+        align-items:center;gap:6px;transition:all .2s"
+        onmouseover="this.style.background='#D97706'"
+        onmouseout="this.style.background='#F59E0B'">
+        <i class="fas fa-cog"></i> Admin
+      </a>
+      <button class="btn-login" onclick="showAuthModal()"><i class="fas fa-user"></i> <span id="authLabel">Connexion</span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="doc-page" id="docPage">
+  <!-- Loading skeleton -->
+  <div class="doc-skeleton">
+    <div class="skel-line" style="width:80px;height:24px;margin-bottom:24px"></div>
+    <div class="doc-header">
+      <div class="skel-line" style="width:120px;height:20px"></div>
+      <div class="skel-line" style="width:70%;height:32px;margin-top:8px"></div>
+      <div class="skel-line" style="width:40%;height:16px"></div>
+      <div class="skel-line" style="width:100%;height:1px;margin:24px 0"></div>
+      <div style="display:grid;grid-template-columns:repeat(4,1fr);gap:12px">
+        <div class="skel-line" style="height:50px"></div>
+        <div class="skel-line" style="height:50px"></div>
+        <div class="skel-line" style="height:50px"></div>
+        <div class="skel-line" style="height:50px"></div>
+      </div>
+    </div>
+    <div class="doc-preview">
+      <div class="skel-line" style="width:60%;margin:0 auto;height:24px"></div>
+    </div>
+  </div>
+</div>
+
+
+<!-- Modal Auth (pour favoris) -->
+<div class="modal-overlay" id="authModal" onclick="if(event.target.id==='authModal')hideAuthModal()">
+  <div class="modal" onclick="event.stopPropagation()" style="max-width:400px">
+    <button class="modal-close" onclick="hideAuthModal()"><i class="fas fa-times"></i></button>
+    <div style="text-align:center;padding:10px 0 20px">
+      <i class="fas fa-lock" style="font-size:2rem;color:var(--primary);margin-bottom:12px"></i>
+      <h3 style="font-family:var(--font-display);font-size:1.2rem">Connexion requise</h3>
+      <p style="color:var(--text-muted);font-size:.88rem;margin:8px 0 20px">Connectez-vous pour ajouter aux favoris</p>
+      <a href="../index.html" class="btn-dl" style="display:inline-flex">
+        <i class="fas fa-sign-in-alt"></i> Aller à la page de connexion
+      </a>
+    </div>
+  </div>
+</div>
+<div id="toast" class="toast"></div>
+<script src="../js/main.js"></script>
+<script>
+// API définie dans main.js
+
+const TYPE_LABELS = {
+  COURS: 'Cours', TD: 'Travaux Dirigés', TP: 'Travaux Pratiques',
+  CC: 'Contrôle Continu', EXAM_SN: 'Examen — Session Normale',
+  EXAM_SR: 'Examen — Session de Rattrapage', TPE: 'Travaux Pratiques Encadrés'
+};
+const TYPE_COLORS = {
+  COURS: '#3B82F6', TD: '#10B981', TP: '#8B5CF6',
+  CC: '#F59E0B', EXAM_SN: '#EF4444', EXAM_SR: '#EC4899', TPE: '#6366F1'
+};
+const LEVEL_BACK = { L1: 'licence1.html', L2: 'licence2.html', L3: 'licence3.html' };
+
+async function loadDocument() {
+  const params = new URLSearchParams(window.location.search);
+  const id = params.get('id');
+  const page = document.getElementById('docPage');
+
+  if (!id) {
+    page.innerHTML = '<div style="text-align:center;padding:80px;color:var(--text-muted)"><i class="fas fa-exclamation-circle fa-3x" style="margin-bottom:16px"></i><p>Aucun document spécifié.</p><a href="../index.html" class="btn-dl" style="display:inline-flex;margin-top:16px">Retour à l\'accueil</a></div>';
+    return;
+  }
+
+  try {
+    const res = await fetch(`${API}/documents/${id}`);
+    if (!res.ok) throw new Error('Not found');
+    const doc = await res.json();
+
+    const typeColor = TYPE_COLORS[doc.type_code] || 'var(--primary)';
+    const typeLabel = TYPE_LABELS[doc.type_code] || doc.type_code;
+    const level = doc.code_ue ? doc.code_ue.substring(0, 2).toUpperCase() === 'IN' ? 
+      (doc.code_ue[2] === '1' ? 'L1' : doc.code_ue[2] === '2' ? 'L2' : 'L3') : '' : '';
+    const backPage = LEVEL_BACK[level] || '../index.html';
+    const backLabel = level ? `Retour ${level}` : 'Retour';
+
+    document.title = `${doc.titre} — UnivThèqueFs`;
+
+    page.innerHTML = `
+      <a href="${backPage}" class="back-link"><i class="fas fa-arrow-left"></i> ${backLabel}</a>
+      <div class="doc-header">
+        <div class="doc-type-badge" style="background:${typeColor}18;color:${typeColor}">
+          <i class="fas fa-tag"></i> ${typeLabel}
+        </div>
+        <h1 class="doc-title">${doc.titre}</h1>
+        <div class="doc-ue">
+          <i class="fas fa-book"></i> ${doc.code_ue || '—'} — ${doc.intitule_ue || ''}
+        </div>
+        ${doc.description ? `<p style="color:var(--text-muted);font-size:.9rem;line-height:1.6">${doc.description}</p>` : ''}
+        <div class="doc-meta-grid">
+          <div class="doc-meta-item">
+            <div class="doc-meta-icon"><i class="fas fa-user-tie"></i></div>
+            <div><div class="doc-meta-label">Professeur</div><div class="doc-meta-val">${doc.professeur || '—'}</div></div>
+          </div>
+          <div class="doc-meta-item">
+            <div class="doc-meta-icon"><i class="fas fa-calendar"></i></div>
+            <div><div class="doc-meta-label">Année académique</div><div class="doc-meta-val">${doc.annee || '—'}</div></div>
+          </div>
+          <div class="doc-meta-item">
+            <div class="doc-meta-icon"><i class="fas fa-graduation-cap"></i></div>
+            <div><div class="doc-meta-label">Niveau</div><div class="doc-meta-val">${doc.niveau || '—'}</div></div>
+          </div>
+          <div class="doc-meta-item">
+            <div class="doc-meta-icon"><i class="fas fa-file"></i></div>
+            <div><div class="doc-meta-label">Format</div><div class="doc-meta-val">${(doc.nom_fichier || '').split('.').pop().toUpperCase() || 'PDF'}</div></div>
+          </div>
+        </div>
+        <div class="doc-actions">
+          <a href="${API}/documents/${doc.id}/download" target="_blank" class="btn-dl">
+            <i class="fas fa-download"></i> Télécharger
+          </a>
+          <button class="btn-fav" onclick="toggleFavorite(${doc.id})">
+            <i class="far fa-bookmark"></i> Ajouter aux favoris
+          </button>
+          <button class="btn-fav" onclick="navigator.clipboard.writeText(window.location.href).then(()=>showToast('Lien copié !'))">
+            <i class="fas fa-link"></i> Copier le lien
+          </button>
+        </div>
+      </div>
+
+      <div class="doc-preview">
+        <div class="preview-icon"><i class="fas fa-file-pdf"></i></div>
+        <p class="preview-text">Prévisualisation disponible après téléchargement</p>
+        <div class="tag-list" style="justify-content:center">
+          <span class="tag"><i class="fas fa-layer-group"></i> ${typeLabel}</span>
+          <span class="tag"><i class="fas fa-graduation-cap"></i> ${doc.niveau || 'Licence'}</span>
+          <span class="tag"><i class="fas fa-book"></i> ${doc.code_ue || ''}</span>
+          ${doc.annee ? `<span class="tag"><i class="fas fa-calendar"></i> ${doc.annee}</span>` : ''}
+        </div>
+      </div>
+    `;
+  } catch (e) {
+    page.innerHTML = `<div style="text-align:center;padding:80px;color:var(--text-muted)">
+      <i class="fas fa-exclamation-triangle fa-3x" style="margin-bottom:16px;color:#EF4444"></i>
+      <p>Document introuvable ou serveur inaccessible.</p>
+      <a href="../index.html" class="btn-dl" style="display:inline-flex;margin-top:20px">Retour à l'accueil</a>
+    </div>`;
+  }
+}
+
+function hideAuthModal() { document.getElementById('authModal').classList.remove('open'); }
+async function toggleFavorite(id) {
+  const token = localStorage.getItem('ut_token');
+  if (!token) { document.getElementById('authModal').classList.add('open'); return; }
+  try {
+    const res = await fetch(`${API}/documents/${id}/favorite`, { method: 'POST', headers: { 'Authorization': 'Bearer ' + token } });
+    const data = await res.json();
+    showToast(data.message || 'Favori mis à jour');
+  } catch { showToast('Erreur réseau', 'error'); }
+}
+
+loadDocument();
+</script>
+<script src="../js/cookies.js"></script>
+</body>
+</html>

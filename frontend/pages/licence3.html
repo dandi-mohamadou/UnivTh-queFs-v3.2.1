@@ -1,0 +1,367 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8"/>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Licence 3 — UnivThèqueFs</title>
+  <link rel="stylesheet" href="../css/style.css"/>
+  <link rel="stylesheet" href="../css/level.css"/>
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Inter:wght@300;400;500;600&display=swap" rel="stylesheet"/>
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css"/>
+</head>
+<body>
+<nav class="navbar" id="navbar">
+  <div class="nav-container">
+    <a href="../index.html" class="nav-brand">
+      <div class="logo-wrapper">
+        <div class="logo-emblem"><span class="logo-u">U</span><span class="logo-t">T</span></div>
+        <div class="logo-text">
+          <span class="brand-main">UnivThèque<span class="brand-accent">Fs</span></span>
+          <span class="brand-sub">Informatique · FS</span>
+        </div>
+      </div>
+    </a>
+    <div class="nav-links">
+      <a href="../index.html" class="nav-link"><i class="fas fa-home"></i></a>
+      <a href="licence1.html" class="nav-link">L1</a>
+      <a href="licence2.html" class="nav-link">L2</a>
+      <a href="licence3.html" class="nav-link active">L3</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:8px">
+      <a href="admin.html" class="btn-admin-nav" title="Administration"
+        style="padding:8px 14px;border-radius:8px;background:#F59E0B;color:#fff;
+        font-weight:700;font-size:.82rem;text-decoration:none;display:inline-flex;
+        align-items:center;gap:6px;transition:all .2s"
+        onmouseover="this.style.background='#D97706'"
+        onmouseout="this.style.background='#F59E0B'">
+        <i class="fas fa-cog"></i> Admin
+      </a>
+      <button class="btn-login" onclick="showAuthModal()"><i class="fas fa-user"></i> <span id="authLabel">Connexion</span></button>
+    </div>
+  </div>
+</nav>
+
+<div class="level-hero level-hero--l3">
+  <div class="container">
+    <div class="breadcrumb">
+      <a href="../index.html">Accueil</a> <i class="fas fa-chevron-right"></i> Licence 3
+    </div>
+    <div class="level-hero__content">
+      <div class="level-hero__badge">L3</div>
+      <div>
+        <h1>Licence 3 <span>— Informatique</span></h1>
+        <p>Semestres 5 &amp; 6 · 12 Unités d'Enseignement · 66 crédits</p>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section class="section">
+  <div class="container">
+
+    <!-- SEMESTRE 5 -->
+    <div class="semester-block">
+      <div class="semester-header">
+        <div class="semester-num">S5</div>
+        <div>
+          <h2>Semestre 5</h2>
+          <p>Réseaux avancés, systèmes mobiles, cloud computing, algorithmique</p>
+        </div>
+      </div>
+      <div class="ue-grid">
+        <div class="ue-card" data-ue="INF315">
+          <div class="ue-card__code l3">INF315</div>
+          <div class="ue-card__body">
+            <h4>Architecture des Réseaux Sans Fil</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF315"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF315','Architecture des Réseaux Sans Fil')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF325">
+          <div class="ue-card__code l3">INF325</div>
+          <div class="ue-card__body">
+            <h4>Conception et Analyse des Algorithmes</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF325"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF325','Conception et Analyse des Algorithmes')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF335">
+          <div class="ue-card__code l3">INF335</div>
+          <div class="ue-card__body">
+            <h4>Réseau et Système d'Exploitation</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF335"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF335','Réseau et SE')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF345">
+          <div class="ue-card__code l3">INF345</div>
+          <div class="ue-card__body">
+            <h4>Système d'Exploitation Mobile</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF345"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF345','SE Mobile')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF355">
+          <div class="ue-card__code l3">INF355</div>
+          <div class="ue-card__body">
+            <h4>Éthique, Morale et Savoir Vivre</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 3 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF355"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF355','Éthique Morale')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF365">
+          <div class="ue-card__code l3">INF365</div>
+          <div class="ue-card__body">
+            <h4>Cloud Computing</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 3 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF365"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF365','Cloud Computing')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+      </div>
+    </div>
+
+    <!-- SEMESTRE 6 -->
+    <div class="semester-block">
+      <div class="semester-header">
+        <div class="semester-num">S6</div>
+        <div>
+          <h2>Semestre 6</h2>
+          <p>Administration systèmes, ingénierie web, compilation, recherche opérationnelle</p>
+        </div>
+      </div>
+      <div class="ue-grid">
+        <div class="ue-card" data-ue="INF316">
+          <div class="ue-card__code l3">INF316</div>
+          <div class="ue-card__body">
+            <h4>Administration des Systèmes et Réseaux</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF316"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF316','Administration des Systèmes et Réseaux')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF326">
+          <div class="ue-card__code l3">INF326</div>
+          <div class="ue-card__body">
+            <h4>Bases de Données</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF326"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF326','Bases de Données')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF336">
+          <div class="ue-card__code l3">INF336</div>
+          <div class="ue-card__body">
+            <h4>Ingénierie des Applications Web</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF336"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF336','Ingénierie des Applications Web')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF346">
+          <div class="ue-card__code l3">INF346</div>
+          <div class="ue-card__body">
+            <h4>Langages Formels et Compilation</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF346"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF346','Langages Formels et Compilation')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF356">
+          <div class="ue-card__code l3">INF356</div>
+          <div class="ue-card__body">
+            <h4>Probabilités et Statistiques</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF356"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF356','Probabilités et Statistiques')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+        <div class="ue-card" data-ue="INF366">
+          <div class="ue-card__code l3">INF366</div>
+          <div class="ue-card__body">
+            <h4>Recherche Opérationnelle</h4>
+            <div class="ue-card__meta"><span><i class="fas fa-star"></i> 6 crédits</span></div>
+            <div class="ue-doc-counts" id="counts-INF366"></div>
+          </div>
+          <button class="ue-card__btn" onclick="openUE('INF366','Recherche Opérationnelle')">
+            <i class="fas fa-folder-open"></i> Voir archives
+          </button>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- Modal UE Archives -->
+<div class="modal-overlay" id="ueModal" onclick="closeUEModal(event)">
+  <div class="modal modal-wide" onclick="event.stopPropagation()">
+    <button class="modal-close" onclick="document.getElementById('ueModal').classList.remove('open')"><i class="fas fa-times"></i></button>
+    <div id="ueModalContent"></div>
+  </div>
+</div>
+
+<div id="toast" class="toast"></div>
+
+<script src="../js/main.js"></script>
+<script>
+// Cache des IDs UEs chargé depuis l'API
+let _ueCache = {};
+let _ueCacheLoaded = false;
+
+async function _loadUECache() {
+  if (_ueCacheLoaded) return;
+  try {
+    const res  = await fetch(API + '/ues');
+    const data = await res.json();
+    if (Array.isArray(data)) {
+      data.forEach(u => { _ueCache[u.code] = u.id; });
+    }
+    _ueCacheLoaded = true;
+  } catch(e) { console.warn('Cache UE non chargé:', e.message); }
+}
+
+async function openUE(code, titre) {
+  // Charger le cache si pas encore fait
+  await _loadUECache();
+  const ueId = _ueCache[code] || null;
+
+  const modal   = document.getElementById('ueModal');
+  const content = document.getElementById('ueModalContent');
+  modal.classList.add('open');
+  content.innerHTML = `<div style="text-align:center;padding:40px">
+    <i class="fas fa-circle-notch fa-spin fa-2x" style="color:var(--primary)"></i>
+    <p style="margin-top:12px;color:var(--text-muted);font-size:.9rem">Chargement des archives...</p>
+  </div>`;
+
+  try {
+    // Chercher par ue_id si disponible, sinon par mot-clé
+    const url = ueId
+      ? `${API}/documents?ue_id=${ueId}&limit=100`
+      : `${API}/documents?q=${encodeURIComponent(code)}&limit=100`;
+
+    const res  = await fetch(url);
+    if (!res.ok) throw new Error('Erreur serveur HTTP ' + res.status);
+    const data = await res.json();
+
+    const TYPES  = ['COURS','TD','TP','CC','EXAM_SN','EXAM_SR','TPE'];
+    const LABELS = {
+      COURS:'Cours magistral', TD:'Travaux Dirigés', TP:'Travaux Pratiques',
+      CC:'Contrôle Continu', EXAM_SN:'Examen — Session Normale',
+      EXAM_SR:'Examen — Session Rattrapage', TPE:'TPE'
+    };
+    const ICONS = {
+      COURS:'fa-book', TD:'fa-pencil-alt', TP:'fa-flask',
+      CC:'fa-file-alt', EXAM_SN:'fa-graduation-cap', EXAM_SR:'fa-redo', TPE:'fa-tasks'
+    };
+
+    const docs  = data.data || [];
+    const total = data.total || 0;
+
+    let html = `
+      <div style="display:flex;align-items:center;gap:12px;margin-bottom:20px;flex-wrap:wrap">
+        <div style="background:var(--primary);color:#fff;padding:8px 16px;border-radius:8px;
+          font-family:var(--font-display,Arial);font-weight:800;font-size:1rem;flex-shrink:0">${code}</div>
+        <div>
+          <div style="font-family:var(--font-display,Arial);font-size:1.05rem;font-weight:700;color:var(--text)">${titre}</div>
+          <div style="font-size:.82rem;color:var(--text-muted);margin-top:2px">
+            <i class="fas fa-folder-open"></i> ${total} document(s) disponible(s)
+          </div>
+        </div>
+      </div>`;
+
+    if (!docs.length) {
+      html += `<div style="text-align:center;padding:40px 20px;color:var(--text-muted)">
+        <i class="fas fa-folder-open" style="font-size:3rem;margin-bottom:16px;opacity:.3"></i>
+        <p style="font-size:.95rem;font-weight:600">Aucune archive disponible pour cette UE.</p>
+        <p style="font-size:.82rem;margin-top:6px">Les documents seront ajoutés par les administrateurs.</p>
+      </div>`;
+    } else {
+      TYPES.forEach(type => {
+        const group = docs.filter(d => d.type_code === type);
+        if (!group.length) return;
+        html += `<div style="margin-bottom:20px">
+          <div style="display:flex;align-items:center;gap:8px;margin-bottom:10px;
+            padding-bottom:8px;border-bottom:2px solid var(--border)">
+            <i class="fas ${ICONS[type]}" style="color:var(--primary);font-size:.9rem"></i>
+            <h5 style="font-weight:700;color:var(--text);font-size:.88rem;margin:0">
+              ${LABELS[type]} <span style="color:var(--text-muted);font-weight:400">(${group.length})</span>
+            </h5>
+          </div>`;
+        group.forEach(doc => {
+          const ext  = (doc.nom_fichier || '').split('.').pop().toUpperCase() || 'PDF';
+          const size = doc.taille_fichier
+            ? (doc.taille_fichier / 1024 / 1024).toFixed(2) + ' Mo' : '';
+          html += `<div style="display:flex;align-items:center;gap:12px;padding:10px 12px;
+              border-radius:8px;border:1px solid var(--border);margin-bottom:8px;
+              cursor:pointer;transition:all .2s"
+            onmouseover="this.style.background='var(--bg)';this.style.borderColor='var(--primary)'"
+            onmouseout="this.style.background='';this.style.borderColor='var(--border)'"
+            onclick="window.location.href='document.html?id=${doc.id}'">
+            <i class="fas fa-file-pdf" style="color:#EF4444;font-size:1.2rem;flex-shrink:0"></i>
+            <div style="flex:1;min-width:0">
+              <div style="font-weight:600;font-size:.88rem;
+                white-space:nowrap;overflow:hidden;text-overflow:ellipsis">${doc.titre}</div>
+              <div style="font-size:.75rem;color:var(--text-muted);margin-top:2px">
+                ${doc.professeur ? '<i class="fas fa-user-tie"></i> ' + doc.professeur + ' &nbsp;' : ''}
+                ${doc.annee ? '<i class="fas fa-calendar"></i> ' + doc.annee + ' &nbsp;' : ''}
+                ${size ? '<i class="fas fa-hdd"></i> ' + size : ''}
+              </div>
+            </div>
+            <button onclick="event.stopPropagation();window.open(API+'/documents/${doc.id}/download','_blank')"
+              style="padding:7px 14px;border-radius:6px;background:var(--primary);
+              color:#fff;border:none;cursor:pointer;font-size:.8rem;flex-shrink:0">
+              <i class="fas fa-download"></i>
+            </button>
+          </div>`;
+        });
+        html += '</div>';
+      });
+    }
+    content.innerHTML = html;
+  } catch(err) {
+    content.innerHTML = `<div style="text-align:center;padding:40px;color:var(--text-muted)">
+      <i class="fas fa-exclamation-triangle" style="font-size:2rem;color:#F59E0B;margin-bottom:12px"></i>
+      <p>Impossible de charger les archives.</p>
+      <p style="font-size:.8rem;margin-top:6px;color:#EF4444">${err.message}</p>
+      <p style="font-size:.78rem;margin-top:8px">Vérifie que Apache et MySQL sont démarrés dans XAMPP.</p>
+    </div>`;
+  }
+}
+
+function closeUEModal(e) {
+  if (e.target.id === 'ueModal') document.getElementById('ueModal').classList.remove('open');
+}
+
+// Précharger le cache au chargement de la page
+document.addEventListener('DOMContentLoaded', _loadUECache);
+</script>
+<script src="../js/cookies.js"></script>
+</body>
+</html>
