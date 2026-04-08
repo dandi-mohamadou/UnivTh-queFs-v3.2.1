@@ -122,10 +122,13 @@ Base URL : `/backend/api/index.php`
 
 ## 👨‍💻 Auteur
 
+MOHAMADOU DANDI MOHAMADOU
+M:23B078FS
+L3INF
 Projet académique — Filière Informatique  
 Faculté des Sciences — Université de Ngaoundéré  
-Année 2024-2025
+Année 2025-2026
 
 ## 📄 Licence
 
-MIT License
+Universite de Ngaoudere License
